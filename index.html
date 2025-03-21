@@ -3,18 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <link rel = "stylesheet" href = "styles.css">
 </head>
 <body>
-  <img src="#">
+  <div id = 'container'>
+    <img src="#" width = '400' height = '400'>
+  </div>
+
   <script>
-    const img = document.querySelector('img');
-    fetch('https://api.giphy.com/v1/gifs/translate?api_key=VqotkVOn1dOwDtt32meVLN4Hphtpwp3L&s=cats')
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(jsonData) {
-        img.src = jsonData.data.images.original.url;
-    });
+    const container = document.getElementById('container');
+
+    const searchBoxAndButtonContainer = document.createElement('div');
+    searchBoxAndButtonContainer.id = 'searchBox-and-button-container';
+
+    const searchBox = document.createElement('input');
+    searchBox.type = "text";
+    searchBox.id = "search-box";
+    searchBox.placeholder = "What kind of GIF do you want to search for?";
+
+    const searchButton = document.createElement('button');
+    searchButton.id = 'search-button';
+    searchButton.textContent = 'Search';
+    searchButton.addEventListener('click', () => {search()});
+
+    container.appendChild(searchBoxAndButtonContainer);
+    searchBoxAndButtonContainer.appendChild(searchBox);
+    searchBoxAndButtonContainer.appendChild(searchButton);
+
+    function search() {
+        const img = document.querySelector('img');
+        const inputField = document.getElementById('search-box');
+        const query = inputField.value;
+        fetch(`https://api.giphy.com/v1/gifs/translate?api_key=VqotkVOn1dOwDtt32meVLN4Hphtpwp3L&s=${query}`)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(jsonData) {
+            img.src = jsonData.data.images.original.url;
+        });
+    }
   </script>
 </body>
 </html>
